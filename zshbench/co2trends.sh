@@ -1,13 +1,10 @@
 co2trends ()
 {
-    : retrieve latest average CO2 reading from NOAA
+    : retrieve latest, 1 year ago, and 10 year ago average CO2 reading from NOAA
     : uses: awk, basename, curl, grep, tail
     : run:  source co2trends.sh   
     : note: a change to echo messages onto STDERR.
     : to see the "canonical format", declare -f co2trends
-    : date: 2020-07-20 -- do not leave data files in cwd
-    : date: 2021-02-10 -- display data source is NOAA
-    : date: 2021-10-14 -- display latest, 1 and 10 years ago values
     set -- ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_trend_gl.txt
     set -- $1 $(basename $1)
     curl -q $1 > $2 || { echo curl error                    1>&2; return 1; }
