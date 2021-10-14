@@ -10,21 +10,18 @@ co2trends ()
     curl -q $1 > $2 || { echo curl error                    1>&2; return 1; }
     :
     tail -n 1 $2 | awk '
-
     BEGIN { fmt = "Latest (%s-%02d-%02d) average global co2 value (NOAA): %s ppm\n" }
           { printf( fmt, $1, $2, $3, $4 ) }
     '
     :
     _p1=$(tail -n 1 $2 | awk '{ print ($1 - 1),"  ",$2,"  ",$3 }')
     grep "$_p1" $2 | awk '
-
     BEGIN { fmt = "One year ago (%s-%02d-%02d) average global co2 value (NOAA): %s ppm\n" }
           { printf( fmt, $1, $2, $3, $4 ) }
     '
     :
     _p10=$(tail -1 $2 | awk '{ print ($1 - 10),"  ",$2,"  ",$3 }')
     grep "$_p10" $2 | awk '
-
     BEGIN { fmt = "Ten years ago (%s-%02d-%02d) average global co2 value (NOAA): %s ppm\n" }
           { printf( fmt, $1, $2, $3, $4 ) }
     '
