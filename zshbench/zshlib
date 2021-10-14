@@ -1,0 +1,41 @@
+fns()
+{
+    typeset -f +
+}
+
+httprc () 
+{ 
+    echo $(curl --write-out %{http_code} --silent --output /dev/null $1)
+}
+
+llrt () 
+{
+    : list Long, Reverse Time order;
+    : date: 2019-04-21 default current directory;
+    /bin/ls -FG -lrt ${*:-.}
+}
+
+icloud () {
+	: the iCloud documents directory
+	: defaults to cd, try pushd, ls -l, echo, ...
+	: date: 2020-12-04 -- MMIII modification
+	${@:-cd} ~/Library/Mobile\ Documents/com~apple~CloudDocs/
+}
+
+dateu () {
+      : show date as UTC
+      date -u
+}
+
+qlook () {
+      : quick look at a file
+      : terminate with space bar
+      : date: 2021-07-05 redirect std err
+      qlmanage -p $1 2> /dev/null
+}
+
+sleep () {
+      : put the display to sleep
+      : date: 2021-08-29
+      pmset displaysleepnow
+}

@@ -1,0 +1,17 @@
+# CLI note taking functions
+# from: http://lifehacker.com/5592047/turn-your-command-line-into-a-fast-and-simple-note+taking-tool
+# updates from mcgowan@alum.mit.edu
+#
+: ${NOTES:=${HOME:-~}/text/notes}
+mkdir -p $NOTES
+n () {
+	pushd $NOTES > /dev/null
+	$EDITOR "$*".txt
+	popd > /dev/null
+}
+
+nls () {
+	pushd $NOTES > /dev/null
+	/bin/ls -lrt | grep "${*:-txt}"
+	popd > /dev/null
+}
