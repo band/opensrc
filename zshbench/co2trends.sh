@@ -6,26 +6,27 @@ co2trends ()
     : note: a change to echo messages onto STDERR.
     : to see the "canonical format", declare -f co2trends
     set -- ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_trend_gl.txt
-    set -- $1 $(basename $1)
-    curl -q $1 > $2 || { echo curl error                    1>&2; return 1; }
+    df=$(basename $1)
+    curl -q $1 > $df || { echo curl error                    1>&2; return 1; }
     :
-    tail -n 1 $2 | awk '
-    BEGIN { fmt = "Latest (%s-%02d-%02d) average global co2 value (NOAA): %s ppm\n" }
-          { printf( fmt, $1, $2, $3, $4 ) }
-    '
+    set -- $(tail -n 1 $df) && yr=$1 && mo=$2 && dy=$3
     :
-    _p1=$(tail -n 1 $2 | awk '{ print ($1 - 1),"  ",$2,"  ",$3 }')
-    grep "$_p1" $2 | awk '
-    BEGIN { fmt = "One year ago (%s-%02d-%02d) average global co2 value (NOAA): %s ppm\n" }
-          { printf( fmt, $1, $2, $3, $4 ) }
-    '
-    :
-    _p10=$(tail -1 $2 | awk '{ print ($1 - 10),"  ",$2,"  ",$3 }')
-    grep "$_p10" $2 | awk '
-    BEGIN { fmt = "Ten years ago (%s-%02d-%02d) average global co2 value (NOAA): %s ppm\n" }
-          { printf( fmt, $1, $2, $3, $4 ) }
-    '
-    rm $(basename $1)
+    grep "$yr    $mo    $dy" $df | awk '
+    BEGIN { fmt = "Latest (%s-%02d-%02d) average global co2 value (NOAA): %s ppm\n" } 
+          {  printf( fmt, $1, $2, $3, $4 )
+          }
+'
+    grep "$(($yr-1))    $mo    $dy" $df | awk '
+    BEGIN { fmt = "One year ago (%s-%02d-%02d) average global co2 value (NOAA): %s ppm\n" } 
+          {  printf( fmt, $1, $2, $3, $4 )
+          }
+'
+    grep "$(($yr-10))    $mo    $dy" $df | awk '
+    BEGIN { fmt = "Ten years ago (%s-%02d-%02d) average global co2 value (NOAA): %s ppm\n" } 
+          {  printf( fmt, $1, $2, $3, $4 )
+          }
+'
+    rm $df
     return
 }
 co2trends 2> /tmp/.daily.er
