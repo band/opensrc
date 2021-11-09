@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+# retrieve and print co2 trend values from NOAA
 # all this to replace curl -q ftp://inFile > outFile
 #   and tail, tr, grep, awk printf
 # retrieve file from NOAA
