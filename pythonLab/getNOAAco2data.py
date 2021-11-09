@@ -47,12 +47,17 @@ average global co2 trend value (NOAA): {dr10.get('trend')}")
     return
 
 def main():
-    with closing(request.urlopen('ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_trend_gl.txt')) as r:
-        with open('co2_trend_gl.txt', 'wb') as f:
-            shutil.copyfileobj(r, f)
 
-    print_data(build_datalist('co2_trend_gl.txt'))
-    os.remove('co2_trend_gl.txt')
+    try:
+        with closing(request.urlopen('ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_trend_gl.txt')) as r:
+            with open('co2_trend_gl.txt', 'wb') as f:
+                shutil.copyfileobj(r, f)
+
+        print_data(build_datalist('co2_trend_gl.txt'))
+        os.remove('co2_trend_gl.txt')
+
+    except Exception as e:
+        traceback.print_exc(e)
 
 if __name__ == "__main__":
     exit(main())
