@@ -2,8 +2,7 @@ co2trends ()
 {
     : retrieve latest, 1 year ago, and 10 year ago average CO2 trend reading from NOAA
     : uses: awk, basename, curl, grep, tail, tr
-    : run:  source co2trends.sh   
-    : note: a change to echo messages onto STDERR.
+    : run:  source co2trends.sh
     : to see the "canonical format", declare -f co2trends
     set -- ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_trend_gl.txt
     df=$(basename $1)
