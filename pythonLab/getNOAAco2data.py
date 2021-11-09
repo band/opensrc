@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
-# retrieve and print co2 trend values from NOAA
-# all this to replace curl -q ftp://inFile > outFile
-#   and tail, tr, grep, awk printf
+# retrieve latest, 1 year ago, and 10 year ago average CO2 trend reading from NOAA
+# (all this to replace a zsh script using curl -q ftp://inFile > outFile
+#   and tail, tr, grep, awk printf)
+# run: python3 getNOAAco2data.py
+#
+# program outline:
 # retrieve file from NOAA
 # read the file, display data from the three lines we care about
 #   read and store the data lines as a list of dictionaries
