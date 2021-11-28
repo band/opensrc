@@ -11,7 +11,7 @@
 #   read and store the data lines as a list of dictionaries
 #   retrieve date on the last line
 #   use that date to find the 1-year and 10-year old trend values
-#   - on leap days only print that day's value
+#   - on February 29 only print that day's value
 #   pretty print the info
 # clean up: remove the downloaded file
 
