@@ -13,11 +13,12 @@ def init_argparse():
     return parser
 
 def main():
-    try:
-        argparser = init_argparse()
-        args = argparser.parse_args()
+    argparser = init_argparse()
+    args = argparser.parse_args()
+    fname = args.filename
 
-        file_text = (Path.cwd() / args.filename).read_text()
+    try:
+        file_text = (Path.cwd() / fname).read_text()
         trans_dict={char: '' for char in (string.ascii_letters + string.digits + string.whitespace)}
         table=file_text.maketrans(trans_dict)
 
