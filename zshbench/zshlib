@@ -3,9 +3,19 @@ fns()
     typeset -f +
 }
 
+emax () {
+	: run emacs in the current terminal
+	: default argument is the current directory
+	emacs -nw ${@:-.}
+}
+
 httprc () 
 { 
     echo $(curl --write-out %{http_code} --silent --output /dev/null $1)
+}
+
+urlrc () {
+	curl -I -s $1 | head -n 1
 }
 
 llrt () 
