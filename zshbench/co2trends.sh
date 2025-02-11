@@ -1,12 +1,13 @@
 co2trends ()
 {
-    : retrieve latest, 1 year ago, and 10 year ago average CO2 trend reading from NOAA
+    : retrieve latest, 1 year ago, and 10 year ago average CO2 trend values from NOAA
     : uses: awk, basename, curl, grep, tail, tr
     : run:  source co2trends.sh
     : to see the "canonical format", declare -f co2trends
+    : date: 2025-02-11 -- set curl connection timeout
     set -- ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_trend_gl.txt
-    df=$(basename $1)
-    curl -q $1 | tr -s ' ' > $df || { echo curl error                    1>&2; return 1; }
+    local df=$(basename $1)
+    curl --connect-timeout 5 -q $1 | tr -s ' ' > $df || { echo curl error 1>&2; return 1; }
     :
     set -- $(tail -n 1 $df) && yr=$1 && mo=$2 && dy=$3
     :
