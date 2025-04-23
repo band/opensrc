@@ -1,8 +1,8 @@
 dailyco2 ()
 {
-    : retrieve latest average CO2 value from NOAA
-    : uses: awk, curl, echo, tail
-    : run:  source dailyco2.sh
+    : retrieve latest average CO2 reading from NOAA
+    : uses: awk, basename, curl, echo, tail
+    : run:  source dailyco2.sh   
     : note: a change to echo messages onto STDERR.
     : to see the "canonical format", declare -f dailyco2
     : date: 2020-07-20 -- do not leave data files in cwd

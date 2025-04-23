@@ -23,6 +23,9 @@ gosatghg ()
     	 { fmt = "Latest %s-%02d monthly CO2 mean value: %s (ppm) | trend value: %s (ppm)\n" }
          { printf( fmt, $1, $2, $3, $4 ) }
     '
+    local dates=$(egrep 'u44496-6' rg-co2.html | sed -n 's/.*&nbsp;\(.*\)<\/span>.*/\1/p')
+    local value=$(egrep -A1 'u44497-4' rg-co2.html | egrep -v 'u44497-4' | egrep -o '<p>(.+)</p>' | sed 's/<[^>]*>//g')
+    echo "CO2 growth in the past one year: " $dates": " $value
     rm rg-co2.html $wamm_zip $wamm_text
     : ch4 data next
     if ! output=$(curl -q https://www.gosat.nies.go.jp/en/recent-global-ch4.html > rg-ch4.html); then
@@ -43,6 +46,9 @@ gosatghg ()
     	 { fmt = "Latest %s-%02d monthly CH4 mean value: %s (ppb) | trend value: %s (ppb)\n" }
          { printf( fmt, $1, $2, $3, $4 ) }
     '
+    local dates=$(egrep 'u43333-8' rg-ch4.html | sed -n 's/.*&nbsp;\(.*\)<\/span>.*/\1/p')
+    local value=$(egrep -A1 'u43334-4' rg-ch4.html | egrep -v 'u44497-4' | egrep -o '<p>(.+)</p>' | sed 's/<[^>]*>//g')
+    echo "CH4 growth in the past one year: " $dates": " $value
     rm rg-ch4.html $wamm_zip $wamm_text
     return
 }
