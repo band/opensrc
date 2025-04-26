@@ -37,7 +37,6 @@ latestco2 ()
         return $?
     fi
     set -- $(cat co2_daily.txt | sed 's/, / /')
-    echo "$1 ;  $2"
     echo "Latest ($(iso_date ${2})) Scripps Mauna Loa Observatory co2 value: $1 ppm"
     rm co2_daily.txt
     : retrieve lastest CO2 reading from NOAA Mauna Loa Observatory;
