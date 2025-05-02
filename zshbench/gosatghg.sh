@@ -3,7 +3,7 @@ gosatghg ()
     : retrieve latest monthly mean CO2 and CH4 readings from Japan NIES GOSAT project data
     : uses: awk, basename, curl, echo, egrep, head, sed, tail, tr, unzip
     : run:  source gosatghg.sh
-    : to see the "canonical format", which gosatghg
+    : to see the "canonical format", declare -f gosatghg
     : co2 data first
     if ! output=$(curl -q https://www.gosat.nies.go.jp/en/recent-global-co2.html > rg-co2.html); then
 	echo "$output" >$2

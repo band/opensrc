@@ -1,6 +1,6 @@
 civility () 
 { 
-    : from a book by P.M. Forni, Choosing Civility, two of the Rules;
+    : two Rules of Civilized Conduct, from Choosing Civility by P.M. Forni;
     : date: 2020-08-24;
     :;
     : -------------------------------------------------------- the Default List --;
