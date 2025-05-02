@@ -22,4 +22,4 @@ jobs:
           gh release create "$tag" \
             --title="$tag" \
             --draft \
-            zsh/bench/latestco2.sh
+            zshbench/latestco2.sh
