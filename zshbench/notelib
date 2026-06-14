@@ -1,17 +1,72 @@
+# 2026-04-29T21-31Z: Release 0.1.2 :-- .../shellLibs/notelibs/.ver/0.1.3/notelib
+notelibv () { echo Release 0.1.2: notelib version 0.1.3 }
 # CLI note taking functions
 # from: http://lifehacker.com/5592047/turn-your-command-line-into-a-fast-and-simple-note+taking-tool
 # updates from mcgowan@alum.mit.edu
-#
-: ${NOTES:=${HOME:-~}/text/notes}
-mkdir -p $NOTES
-n () {
-	pushd $NOTES > /dev/null
-	$EDITOR "$*".txt
-	popd > /dev/null
+# 2026-02-21 zsh-specific assistance from Claude Sonnet 4.6
+# Install: `source notelib`
+notelib () {
+    : debug ENTRY $# "$@"
+    case "${1:-__NADA__}" in
+	(__NADA__|-h|--help|help) notelib_help ;;
+	(-v|-V|--version) notelibv ;;
+	(*) notelib_help ;;
+    esac
 }
 
+notelib_help () {
+    : display help text
+    cat <<'EOF'
+NAME
+  notelib - functions for command-line text or markdown note taking
+
+SYNOPSIS
+  n [notefile_name]	     Create a new note or Open an existing note; default name is a timestamp
+  nlast			     Edit the most recent note
+  nls [pattern]		     List notes matching name, or with no argument, list all
+  notelib [-v|-V|--version]  Display release/version info
+  notelib [-h|--help|help]   Display this help info
+
+ENVIRONMENT
+  NOTES		The notes directory. `~/text/notes` is the default if not set
+  EDITOR	The editor app used to create and update notes
+EOF
+}
+
+n () {
+    : create or edit a text or markdown note
+    [[ -z "$EDITOR" ]] && { print -u2 "Error: \$EDITOR is not set"; return 1 }
+
+    ts () { print -r "$(TZ=UTC date +%Y-%m-%dT%H-%MZ)" }
+
+    local notes="${NOTES:-${HOME}/text/notes}" 
+    local name="${1:-$(ts)}"
+    [[ "$name" == (.|..|*/*) ]] && {
+        print -ru2 "Error: invalid note name '$name'"
+        return 1
+    }
+
+    mkdir -p -- "$notes"
+    [[ -z "${name:e}" ]] && name="${name}.md"
+    ${(z)EDITOR} "$NOTES/$name"
+}
+nlast() {
+    : edit the most recent note
+    local -a notes
+    notes=( "$NOTES"/*.{txt,md}(.om[1]N) )
+    (( $#notes )) || { print -u2 "nlast: no notes in ${NOTES:-<unset>}"; return 1; }
+    ${(z)EDITOR} "$notes[1]"
+}
 nls () {
-	pushd $NOTES > /dev/null
-	/bin/ls -lrt | grep "${*:-txt}"
-	popd > /dev/null
+    : list notes
+    setopt localoptions extendedglob nocaseglob    
+    local notes="${NOTES:-${HOME}/text/notes}"
+    local -a files
+    files=("$NOTES"/*${1:-}*.(txt|md)(N))    
+    if (( $#files == 0 ))
+    then
+	print -u2 "No notes found${1:+ matching '$1'}"
+	return 1
+    fi
+    ls -Flrt -- $files
 }
